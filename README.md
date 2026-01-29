@@ -1,5 +1,4 @@
 # crunchengine
-Query engine in Rust
 
 Query engines are the invisible workhorses powering modern data infrastructure. Every time you run a SQL query against a database, execute a Spark job, or query a data lake, a query engine is transforming your high-level request into an efficient execution plan.
 
@@ -43,3 +42,5 @@ Now reading salary means reading one contiguous block of memory, with no jumping
 - Modern CPUs load memory in cache lines (typically 64 bytes). Columnar data packs more useful values per cache line.
 - Similar values grouped together compress much better. A column of departments might compress to just a few distinct values.
 - CPUs can apply the same operation to multiple values simultaneously (Single Instruction, Multiple Data). Columnar layout enables this.
+
+## Arrow memory layout
