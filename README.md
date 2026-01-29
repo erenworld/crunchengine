@@ -44,3 +44,26 @@ Now reading salary means reading one contiguous block of memory, with no jumping
 - CPUs can apply the same operation to multiple values simultaneously (Single Instruction, Multiple Data). Columnar layout enables this.
 
 ## Arrow memory layout
+An Arrow column (called a "vector" or "array") consists of:
+
+A data buffer containing the actual values, packed contiguously
+A validity buffer, which is a bitmap indicating which values are null
+An optional offset buffer for variable-length types like strings
+
+For a column of 32-bit integers `[1, null, 3, 4]`:
+
+```rust
+Validity bitmap: [1, 0, 1, 1]  (bit per value: 1=valid, 0=null)
+Data buffer:     [1, ?, 3, 4]  (? = undefined, since null)
+```
+
+For strings, we need offsets because strings vary in length:
+
+```rust
+Values: ["hello", "world", "!"]
+Offsets: [0, 5, 10, 11]  (start position of each string, plus end)
+Data:    "helloworld!"   (all strings concatenated)
+```
+
+> Fixed-width types like integers require just one memory access per value. The validity bitmap uses just one bit per value, so checking for nulls is cheap.
+
